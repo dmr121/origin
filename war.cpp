@@ -29,11 +29,16 @@ struct Card {
     Rank rank;
 };
 
-void compare (std::queue<Card> & winner, std::queue<Card> & loser) {
+void winBattle (std::queue<Card> & winner, std::queue<Card> & loser, std::queue<Card> & warLoot) {
     winner.push(winner.front());
     winner.pop();
     winner.push(loser.front());
     loser.pop();
+
+    while (warLoot.size() > 0) {
+        winner.push(warLoot.front());
+        warLoot.pop();
+    }
 }
 
 int main() {
@@ -54,17 +59,18 @@ int main() {
         Card& player2Card = player2Deck.front();
 
         if (player1Card.suit < player2Card.suit) {
-            compare(player2Deck, player1Deck);
+            winBattle(player2Deck, player1Deck, warLoot);
         }
         if (player1Card.suit > player2Card.suit) {
-            compare(player1Deck, player2Deck);
+            winBattle(player2Deck, player1Deck, warLoot);
         }
 
         // War takes place here
         if (player1Card.suit == player2Card.suit) {
-            
+            warLoot.push(player1Card);
+            warLoot.push(player2Card);
+            warLoot.push(player1Card);
+            warLoot.push(player2Card);
         }
     } while (player1Deck.size() != 52 && player1Deck.size() != 0);
-
-
 }
