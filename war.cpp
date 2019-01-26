@@ -21,7 +21,6 @@ enum Rank {
 	Queen,
 	King,
 	Ace
-
 };
 
 struct Card {
@@ -30,6 +29,11 @@ struct Card {
 };
 
 int main() {
-	Card test{Heart, Nine};
-	std::cout << test.suit;
+	Card deck[52];
+	for (int i = 0; i < 4; ++i) {
+		for (int j = 0; j < 13; ++j) {
+			deck[j + (13*i)].suit = Suit(i);
+			deck[j + (13*i)].rank = Rank(j);
+		}
+	}
 }
