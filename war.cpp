@@ -59,9 +59,14 @@ int main() {
         }
     }
 
+
     std::queue<Card> player1Deck;
     std::queue<Card> player2Deck;
     std::queue<Card> warLoot;
+    for (int i = 0; i < 26; ++i) {
+        player1Deck.push(deck[i]);
+        player2Deck.push(deck[2*i + 1]);
+    }
 
     do {
         Card& player1Card = player1Deck.front();
@@ -76,7 +81,7 @@ int main() {
 
         // War takes place here
         if (player1Card.suit == player2Card.suit) {
-            draw(player2Deck, player1Deck, warLoot);
+            draw(player1Deck, player2Deck, warLoot);
         }
     } while (player1Deck.size() != 52 && player1Deck.size() != 0);
 }
