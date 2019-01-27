@@ -41,6 +41,15 @@ void winBattle (std::queue<Card> & winner, std::queue<Card> & loser, std::queue<
     }
 }
 
+void draw (std::queue<Card> & player1Deck, std::queue<Card> & player2Deck, std::queue<Card> & warLoot) {
+    for (int i = 0; i < 2; ++i) {
+        warLoot.push(player1Deck.front());
+        player1Deck.pop();
+        warLoot.push(player2Deck.front());
+        player2Deck.pop();
+    }
+}
+
 int main() {
     Card deck[52];
     for (int i = 0; i < 4; ++i) {
@@ -67,10 +76,7 @@ int main() {
 
         // War takes place here
         if (player1Card.suit == player2Card.suit) {
-            warLoot.push(player1Card);
-            warLoot.push(player2Card);
-            warLoot.push(player1Card);
-            warLoot.push(player2Card);
+            draw(player2Deck, player1Deck, warLoot);
         }
     } while (player1Deck.size() != 52 && player1Deck.size() != 0);
 }
