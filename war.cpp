@@ -1,5 +1,6 @@
 #include <iostream>
 #include <queue>
+#include <cstdlib>
 
 enum Suit {
     Heart,
@@ -41,13 +42,27 @@ void winBattle (std::queue<Card> & winner, std::queue<Card> & loser, std::queue<
     }
 }
 
+void popDeck (std::queue<Card> & deck, std::queue<Card> & warLoot) {
+    warLoot.push(deck.front());
+    deck.pop();
+}
+
 void draw (std::queue<Card> & player1Deck, std::queue<Card> & player2Deck, std::queue<Card> & warLoot) {
-    for (int i = 0; i < 2; ++i) {
-        warLoot.push(player1Deck.front());
-        player1Deck.pop();
-        warLoot.push(player2Deck.front());
-        player2Deck.pop();
-    }
+        if (player1Deck.size() > 2) {
+            popDeck(player1Deck, warLoot);
+            popDeck(player1Deck, warLoot);
+        }
+        else if (player1Deck.size() == 2) {
+            popDeck(player1Deck, warLoot);
+        }
+
+        if (player2Deck.size() > 2) {
+            popDeck(player2Deck, warLoot);
+            popDeck(player2Deck, warLoot);
+        }
+        else if (player2Deck.size() == 2) {
+            popDeck(player2Deck, warLoot);
+        }
 }
 
 int main() {
@@ -58,10 +73,13 @@ int main() {
             deck[j + (13*i)].rank = Rank(j);
         }
     }
+
     // Randomly sort the deck
+    // Seeding the time
+    srand(time(0));
     for (int i = 0; i < 100; ++i) {
-        int random1 = rand() % 52 + 1;
-        int random2 = rand() % 52 + 1;
+        int random1 = rand() % 52;
+        int random2 = rand() % 52;
         std::swap(deck[random1], deck[random2]);
     }
 
@@ -70,23 +88,31 @@ int main() {
     std::queue<Card> warLoot;
     for (int i = 0; i < 26; ++i) {
         player1Deck.push(deck[i]);
-        player2Deck.push(deck[2*i + 1]);
+        player2Deck.push(deck[(2*i) + 1]);
     }
 
     do {
         Card& player1Card = player1Deck.front();
         Card& player2Card = player2Deck.front();
 
-        if (player1Card.suit < player2Card.suit) {
+        if (player1Card.rank < player2Card.rank) {
+            std::cout << player1Card.rank << " vs " << player2Card.rank << std::endl;
             winBattle(player2Deck, player1Deck, warLoot);
         }
-        if (player1Card.suit > player2Card.suit) {
-            winBattle(player2Deck, player1Deck, warLoot);
+        else if (player1Card.rank > player2Card.rank) {
+            std::cout << player1Card.rank << " vs " << player2Card.rank << std::endl;
+            winBattle(player1Deck, player2Deck, warLoot);
         }
-
-        // War takes place here
-        if (player1Card.suit == player2Card.suit) {
+        else {
+            // War takes place here
             draw(player1Deck, player2Deck, warLoot);
         }
-    } while (player1Deck.size() != 52 && player1Deck.size() != 0);
+    } while (player1Deck.size() > 0 && player2Deck.size() > 0);
+
+    if (player1Deck.size() == 52) {
+        std::cout << "Winner: Player 1" << std::endl;
+    } else {
+        std::cout << "Winner: Player 2" << std::endl;
+    }
+    return 0;
 }
