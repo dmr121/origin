@@ -58,7 +58,12 @@ int main() {
             deck[j + (13*i)].rank = Rank(j);
         }
     }
-
+    // Randomly sort the deck
+    for (int i = 0; i < 100; ++i) {
+        int random1 = rand() % 52 + 1;
+        int random2 = rand() % 52 + 1;
+        std::swap(deck[random1], deck[random2]);
+    }
 
     std::queue<Card> player1Deck;
     std::queue<Card> player2Deck;
