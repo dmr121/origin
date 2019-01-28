@@ -30,6 +30,9 @@ struct Card {
     Rank rank;
 };
 
+// PRECONDITION: Winner deck, loser deck, cards at stake when war takes place
+//
+// POSTCONDITION: Gives winning deck all of the cards won
 void winBattle (std::queue<Card> & winner, std::queue<Card> & loser, std::queue<Card> & warLoot) {
     winner.push(winner.front());
     winner.pop();
@@ -42,11 +45,18 @@ void winBattle (std::queue<Card> & winner, std::queue<Card> & loser, std::queue<
     }
 }
 
+// PRECONDITION: A player deck, cards at stake when war takes place
+//
+// POSTCONDITION: Pops card from front of player deck and pushes it 
+//                to back of warLoot deck
 void popDeck (std::queue<Card> & deck, std::queue<Card> & warLoot) {
     warLoot.push(deck.front());
     deck.pop();
 }
 
+// PRECONDITION: Winner deck, loser deck, cards at stake when war takes place
+//
+// POSTCONDITION: Removes cards from player decks to be added to the warLoot pile
 void draw (std::queue<Card> & player1Deck, std::queue<Card> & player2Deck, std::queue<Card> & warLoot) {
         if (player1Deck.size() > 2) {
             popDeck(player1Deck, warLoot);
@@ -83,6 +93,7 @@ int main() {
         std::swap(deck[random1], deck[random2]);
     }
 
+    // Pushing random cards to player decks
     std::queue<Card> player1Deck;
     std::queue<Card> player2Deck;
     std::queue<Card> warLoot;
@@ -95,10 +106,12 @@ int main() {
         Card& player1Card = player1Deck.front();
         Card& player2Card = player2Deck.front();
 
+        // If player 2 wins
         if (player1Card.rank < player2Card.rank) {
             std::cout << player1Card.rank << " vs " << player2Card.rank << std::endl;
             winBattle(player2Deck, player1Deck, warLoot);
         }
+        // If player 1 wins
         else if (player1Card.rank > player2Card.rank) {
             std::cout << player1Card.rank << " vs " << player2Card.rank << std::endl;
             winBattle(player1Deck, player2Deck, warLoot);
