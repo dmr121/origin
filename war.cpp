@@ -35,9 +35,9 @@ struct Player {
     std::queue <Card> deck;
 };
 
-// PRECONDITION: Winner deck, loser deck, cards at stake when war takes place
+// PRECONDITION: Winner, loser, cards at stake when war takes place
 //
-// POSTCONDITION: Gives winning deck all of the cards won
+// POSTCONDITION: Gives winning player all of the cards won
 void winBattle (Player & winner, Player & loser, std::queue<Card> & warLoot) {
     winner.deck.push(winner.deck.front());
     winner.deck.pop();
@@ -108,17 +108,12 @@ int main() {
     }
 
     do {
-        Card& player1Card = player1.deck.front();
-        Card& player2Card = player2.deck.front();
-
         // If player 2 wins
-        if (player1Card.rank < player2Card.rank) {
-            std::cout << player1Card.rank << " vs " << player2Card.rank << std::endl;
+        if (player1.deck.front().rank < player2.deck.front().rank) {
             winBattle(player2, player1, warLoot);
         }
         // If player 1 wins
-        else if (player1Card.rank > player2Card.rank) {
-            std::cout << player1Card.rank << " vs " << player2Card.rank << std::endl;
+        else if (player1.deck.front().rank > player2.deck.front().rank) {
             winBattle(player1, player2, warLoot);
         }
         else {
