@@ -31,17 +31,21 @@ struct Card {
     Rank rank;
 };
 
+struct Player {
+    std::queue <Card> deck;
+};
+
 // PRECONDITION: Winner deck, loser deck, cards at stake when war takes place
 //
 // POSTCONDITION: Gives winning deck all of the cards won
-void winBattle (std::queue<Card> & winner, std::queue<Card> & loser, std::queue<Card> & warLoot) {
-    winner.push(winner.front());
-    winner.pop();
-    winner.push(loser.front());
-    loser.pop();
+void winBattle (Player & winner, Player & loser, std::queue<Card> & warLoot) {
+    winner.deck.push(winner.deck.front());
+    winner.deck.pop();
+    winner.deck.push(loser.deck.front());
+    loser.deck.pop();
 
     while (warLoot.size() > 0) {
-        winner.push(warLoot.front());
+        winner.deck.push(warLoot.front());
         warLoot.pop();
     }
 }
@@ -50,29 +54,29 @@ void winBattle (std::queue<Card> & winner, std::queue<Card> & loser, std::queue<
 //
 // POSTCONDITION: Pops card from front of player deck and pushes it 
 //                to back of warLoot deck
-void popDeck (std::queue<Card> & deck, std::queue<Card> & warLoot) {
-    warLoot.push(deck.front());
-    deck.pop();
+void popDeck (std::queue <Card> & playerDeck, std::queue<Card> & warLoot) {
+    warLoot.push(playerDeck.front());
+    playerDeck.pop();
 }
 
 // PRECONDITION: Winner deck, loser deck, cards at stake when war takes place
 //
 // POSTCONDITION: Removes cards from player decks to be added to the warLoot pile
-void draw (std::queue<Card> & player1Deck, std::queue<Card> & player2Deck, std::queue<Card> & warLoot) {
-        if (player1Deck.size() > 2) {
-            popDeck(player1Deck, warLoot);
-            popDeck(player1Deck, warLoot);
+void draw (Player & player1, Player & player2, std::queue<Card> & warLoot) {
+        if (player1.deck.size() > 2) {
+            popDeck(player1.deck, warLoot);
+            popDeck(player1.deck, warLoot);
         }
-        else if (player1Deck.size() == 2) {
-            popDeck(player1Deck, warLoot);
+        else if (player1.deck.size() == 2) {
+            popDeck(player1.deck, warLoot);
         }
 
-        if (player2Deck.size() > 2) {
-            popDeck(player2Deck, warLoot);
-            popDeck(player2Deck, warLoot);
+        if (player2.deck.size() > 2) {
+            popDeck(player2.deck, warLoot);
+            popDeck(player2.deck, warLoot);
         }
-        else if (player2Deck.size() == 2) {
-            popDeck(player2Deck, warLoot);
+        else if (player2.deck.size() == 2) {
+            popDeck(player2.deck, warLoot);
         }
 }
 
@@ -95,35 +99,35 @@ int main() {
     }
 
     // Pushing random cards to player decks
-    std::queue<Card> player1Deck;
-    std::queue<Card> player2Deck;
+    Player player1;
+    Player player2;
     std::queue<Card> warLoot;
     for (int i = 0; i < 26; ++i) {
-        player1Deck.push(deck[i]);
-        player2Deck.push(deck[(2*i) + 1]);
+        player1.deck.push(deck[i]);
+        player2.deck.push(deck[(2*i) + 1]);
     }
 
     do {
-        Card& player1Card = player1Deck.front();
-        Card& player2Card = player2Deck.front();
+        Card& player1Card = player1.deck.front();
+        Card& player2Card = player2.deck.front();
 
         // If player 2 wins
         if (player1Card.rank < player2Card.rank) {
             std::cout << player1Card.rank << " vs " << player2Card.rank << std::endl;
-            winBattle(player2Deck, player1Deck, warLoot);
+            winBattle(player2, player1, warLoot);
         }
         // If player 1 wins
         else if (player1Card.rank > player2Card.rank) {
             std::cout << player1Card.rank << " vs " << player2Card.rank << std::endl;
-            winBattle(player1Deck, player2Deck, warLoot);
+            winBattle(player1, player2, warLoot);
         }
         else {
             // War takes place here
-            draw(player1Deck, player2Deck, warLoot);
+            draw(player1, player2, warLoot);
         }
-    } while (player1Deck.size() > 0 && player2Deck.size() > 0);
+    } while (player1.deck.size() > 0 && player2.deck.size() > 0);
 
-    if (player1Deck.size() == 52) {
+    if (player1.deck.size() == 52) {
         std::cout << "Winner: Player 1" << std::endl;
     } else {
         std::cout << "Winner: Player 2" << std::endl;
