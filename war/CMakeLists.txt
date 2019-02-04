@@ -1,1 +1,1 @@
-add_executable(war war.cpp)
+add_executable(war main.cpp)
