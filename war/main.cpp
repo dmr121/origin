@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <cstdlib>
-#include "card.hpp"
+#include "PlayingCard.hpp"
 #include "game.hpp"
 #include <algorithm>    // std::shuffle
 #include <random>       // std::default_random_engine
@@ -67,6 +67,9 @@ int main() {
 	    {Spade, Jack},
 	    {Spade, Queen},
 	    {Spade, King},
+
+	    {Red, Joker},
+	    {Black, Joker},
 	};	
 
 	// Seeding the time

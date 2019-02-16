@@ -76,7 +76,7 @@ void Game::play() {
             this->draw();
         }
     } while (deck1.size() > 0 && deck2.size() > 0);
-    if (deck1.size() == 52) {
+    if (deck1.size() > deck2.size()) {
         std::cout << "Player 1 Wins\n";
     } else {
         std::cout << "Player 2 Wins\n";
