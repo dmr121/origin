@@ -11,7 +11,7 @@ enum Suit {
 };
 
 enum Rank {
-    Two,
+    Two = 1,
     Three,
     Four,
     Five,
@@ -32,20 +32,21 @@ enum Color {
     Black,
 };
 
-class Card {
+class PlayingCard {
 private:
 	uint8_t SuitRank;
 
 public:
-	Card(Suit suit, Rank rank);
-    Card(Color color, Rank rank);
+	PlayingCard(Suit suit, Rank rank);
+    //For initializing a joker card
+    PlayingCard(Color color, Rank rank);
 	uint8_t getRank() const;
 	uint8_t getSuit() const;
     uint8_t getColor() const;
 };
 
-struct Deck : std::deque<Card> {
-  using std::deque<Card>::deque;
+struct Deck : std::deque<PlayingCard> {
+  using std::deque<PlayingCard>::deque;
 };
 
 #endif

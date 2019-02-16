@@ -62,6 +62,7 @@ void Game::winBattle (Deck & winner, Deck & loser) {
 //                a game of war until a winner is declared. The winner
 //                is printed out to the screen.
 void Game::play() {
+    int counter = 0;
 	do {
         // If player 2 wins
         if (deck1.front().getRank() < deck2.front().getRank()) {
