@@ -1,23 +1,53 @@
 #include "PlayingCard.hpp"
 
 // For initialization of a standard card
-Card::Card(Suit suit, Rank rank)
- : SuitRank(SuitRank * 0 + (suit * 16) + rank)
+StandardCard::StandardCard(Suit suit_, Rank rank_)
+ : suit(suit_), rank(rank_)
  { }
 
-// For initialization of a joker card
-Card::Card(Color color, Rank rank)
- : SuitRank(SuitRank * 0 + (color * 64) + rank)
+Suit StandardCard::getSuit() const {
+ 	return suit;
+}
+
+Rank StandardCard::getRank() const {
+ 	return rank;
+}
+
+JokerCard::JokerCard(Color color_)
+ : color(color_)
  { }
 
-uint8_t Card::getSuit() const {
- 	return SuitRank >> 4;
+Color JokerCard::getColor() const {
+	return color;
 }
 
-uint8_t Card::getRank() const {
- 	return SuitRank % 16;
+PlayingCard::PlayingCard(Suit suit_, Rank rank_)
+ : data(suit_, rank_), tag(Standard)
+ { }
+
+PlayingCard::PlayingCard(Color color_)
+ : data(color_), tag(Joker)
+ { }
+
+bool PlayingCard::isStandard() {
+	return tag == Standard;
 }
 
-uint8_t Card::getColor() const {
-	return SuitRank >> 6;
+bool PlayingCard::isJoker() {
+	return tag == Joker;
+}
+
+Suit PlayingCard::getSuit() {
+	assert(isStandard());
+	return data.standard.getSuit();
+}
+
+Rank PlayingCard::getRank() {
+	assert(isStandard());
+	return data.standard.getRank();
+}
+
+Color PlayingCard::getColor() {
+	assert(isJoker());
+	return data.joker.getColor();
 }

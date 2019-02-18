@@ -68,8 +68,8 @@ int main() {
 	    {Spade, Queen},
 	    {Spade, King},
 
-	    {Red, Joker},
-	    {Black, Joker},
+	    {Red},
+	    {Black},
 	};	
 
 	// Seeding the time
@@ -82,5 +82,5 @@ int main() {
 	// Splitting the deck from above
 	game.splitDeck(deck);
 	// Play a game of war
-	game.play();
+	//game.play();
 }
