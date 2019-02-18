@@ -68,8 +68,9 @@ int main() {
 	    {Spade, Queen},
 	    {Spade, King},
 
-	    {Red, Joker},
-	    {Black, Joker},
+	    // Declaration of two joker cards
+	    //{Red, Joker},
+	    //{Black, Joker},
 	};	
 
 	// Seeding the time
