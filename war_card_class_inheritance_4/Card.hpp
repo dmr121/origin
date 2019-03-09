@@ -39,7 +39,7 @@ enum CardType {
 };
 
 class Card {
-private:
+protected:
     CardType type;
 
 public:
@@ -49,10 +49,12 @@ public:
     virtual void print() const = 0;
     virtual Color getColor() const = 0;
     CardType getType();
+    bool isStandard() const;
+    bool isJoker() const;
 };
 
 // The class for a standard card
-class StandardCard : Card {
+class StandardCard : public Card {
 private:
 	Suit suit;
     Rank rank;
@@ -69,7 +71,7 @@ public:
 };
 
 // The class for a nonstandard joker card
-class JokerCard : Card {
+class JokerCard : public Card {
 private:
     Color color;
 

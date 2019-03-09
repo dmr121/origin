@@ -66,26 +66,20 @@ void JokerCard::print() const {
 	}
 	return;
 }
-/*
-bool Card::isStandard() {
-	return tag == Standard;
+
+
+bool Card::isStandard() const {
+	if (type == Standard) {
+		return true;
+	} else {
+		return false;
+	}
 }
 
-bool PlayingCard::isJoker() {
-	return tag == Joker;
+bool Card::isJoker() const {
+	if (type == Joker) {
+		return true;
+	} else {
+		return false;
+	}
 }
-
-Suit PlayingCard::getSuit() {
-	assert(isStandard());
-	return data.standard.getSuit();
-}
-
-Rank PlayingCard::getRank() {
-	assert(isStandard());
-	return data.standard.getRank();
-}
-
-Color PlayingCard::getColor() {
-	assert(isJoker());
-	return data.joker.getColor();
-} */
