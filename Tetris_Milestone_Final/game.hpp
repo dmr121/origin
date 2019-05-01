@@ -5,17 +5,118 @@
 #include <time.h>
 #include "figure.hpp"
 
-class Game {
-private:
+struct event_listener
+{
+  // Window events
+  virtual void on_close() { }
+
+  // Keyboard events
+  virtual void on_key_press(sf::Event::KeyEvent) { }
+};
+
+struct event_source
+{
+  event_source(sf::Window& w)
+    : window(&w)
+  { }
+
+  void
+  listen(event_listener& l)
+  {
+    listeners.push_back(&l);
+  }
+
+  // Notify listeners of queued events.
+  void
+  poll()
+  {
+    sf::Event e;
+    while (window->pollEvent(e))
+      process(e);
+  }
+
+  // Notify listeners of a single event.
+  void process(sf::Event const& e)
+  {
+    switch (e.type) {
+    case sf::Event::Closed:
+      return notify([e](event_listener* l) { l->on_close(); });
+    case sf::Event::KeyPressed:
+      return notify([e](event_listener* l) { l->on_key_press(e.key); });
+    default:
+      break;
+    }
+  }
+
+  template<typename F>
+  void notify(F fn)
+  {
+    for (event_listener* l : listeners)
+      fn(l);    
+  }
+
+  // The window that we can poll for events.
+  sf::Window* window;
+
+  // A list of listeners to notify about particular
+  // events.
+  std::vector<event_listener*> listeners;
+};
+
+struct Game : event_listener {
   Figure figure;
   sf::Clock clock;
   float timer, delay;
   bool inProgress;
-public:
+  sf::RenderWindow window;
+  sf::Sprite s, background, frame;
+  sf::Texture t1, t2, t3;
+
   // Default constructor
   Game()
-   : timer(0), delay(0.3), inProgress(true)
-   { }
+   : timer(0), delay(0.3), inProgress(true), window(sf::VideoMode(320, 480), "The Game!")
+   {
+    t1.loadFromFile("../images/tiles.png");
+    t2.loadFromFile("../images/background.png");
+    t3.loadFromFile("../images/frame.png");
+    s.setTexture(t1);
+    background.setTexture(t2);
+    frame.setTexture(t3);
+    window.setVerticalSyncEnabled(true);
+   }
+
+   // Returns true if the app is open.
+   bool is_open() const { return window.isOpen(); }
+
+   // Close the application.
+   void
+   on_close() override
+   {
+     window.close();
+   }
+
+   void on_key_press(sf::Event::KeyEvent e) override {
+    if (e.code == sf::Keyboard::Up) {
+      figure.rotate();
+    }
+    else if (e.code == sf::Keyboard::Left) {
+      figure.move(Left);
+    }
+    else if (e.code == sf::Keyboard::Right) {
+      figure.move(Right);
+    }
+    else if (e.code == sf::Keyboard::Down) {
+      delay = 0.05;
+    }
+   }
+
+   void draw() {
+    window.clear(sf::Color::White);
+    window.draw(background);
+    drawBlocks(s);
+    window.draw(frame);
+    window.display();
+   }
 
    //PRECONDITION: None
    //
@@ -35,30 +136,6 @@ public:
    //POSTCONDITION: Returns the active status of the game
    bool isInProgress() {
     return inProgress;
-   }
-
-   //PRECONDITION: Event and window objects
-   //
-   //POSTCONDITION: Reads keyboard/event input and reacts accordingly.
-   //               Can rotate, move laterally, speed up the fall of the figure.
-   //               Also can close the window.
-   void pollKeyBoard(sf::Event & e, sf::RenderWindow & window) {
-      while (window.pollEvent(e)) {
-        if (e.type == sf::Event::Closed)
-          window.close();
-
-        if (e.type == sf::Event::KeyPressed) {
-          if (e.key.code == sf::Keyboard::Up)
-            figure.rotate();
-          else if (e.key.code == sf::Keyboard::Left)
-            figure.move(Left);
-          else if (e.key.code == sf::Keyboard::Right)
-            figure.move(Right);
-        }
-      }
-
-      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-      delay = 0.05;
    }
 
    //PRECONDITION: None
@@ -115,7 +192,7 @@ public:
    //
    //POSTCONDITION: Draw the current positions of eveything on the screen
    //               based off of figure coordinates and field properties.
-   void drawBlocks(sf::RenderWindow & window, sf::Sprite & s) {
+   void drawBlocks(sf::Sprite & s) {
     for (int i = 0; i < M; i++)
       for (int j = 0; j < N; j++) {
         if (field[i][j] == 0)

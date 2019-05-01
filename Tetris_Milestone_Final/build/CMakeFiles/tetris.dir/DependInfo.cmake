@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/Users/davidrozmajzl/origin/Tetris_Milestone_Final/main.cpp" "/Users/davidrozmajzl/origin/Tetris_Milestone_Final/build/CMakeFiles/tetris.dir/main.cpp.o"
+  "/Users/davidrozmajzl/origin/Tetris_Milestone_3/main.cpp" "/Users/davidrozmajzl/origin/Tetris_Milestone_3/build/CMakeFiles/tetris.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "Clang")
 
