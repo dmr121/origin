@@ -1,0 +1,3 @@
+/Users/davidrozmajzl/origin/Tetris_Milestone_Final/build/CMakeFiles/rebuild_cache.dir
+/Users/davidrozmajzl/origin/Tetris_Milestone_Final/build/CMakeFiles/edit_cache.dir
+/Users/davidrozmajzl/origin/Tetris_Milestone_Final/build/CMakeFiles/tetris.dir

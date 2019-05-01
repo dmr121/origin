@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/davidrozmajzl/origin/Tetris_Milestone_Final/figure.hpp
+SFML/Graphics.hpp
+-
+game.hpp
+/Users/davidrozmajzl/origin/Tetris_Milestone_Final/game.hpp
+iterator
+-
+
+/Users/davidrozmajzl/origin/Tetris_Milestone_Final/game.hpp
+SFML/Graphics.hpp
+-
+time.h
+-
+figure.hpp
+/Users/davidrozmajzl/origin/Tetris_Milestone_Final/figure.hpp
+
+/Users/davidrozmajzl/origin/Tetris_Milestone_Final/main.cpp
+SFML/Graphics.hpp
+-
+time.h
+-
+game.hpp
+/Users/davidrozmajzl/origin/Tetris_Milestone_Final/game.hpp
+iostream
+-
+
