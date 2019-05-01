@@ -136,7 +136,6 @@ struct Figure {
   //
   //POSTCONDITION: Moves figure in specified direction
   void move(Direction dir) {
-    std::cout << "Pickle\n";
     for (int i = 0; i < 8; i++) {
       if (coordinates[i].y != -1) {
         tempCoords[i] = coordinates[i];
